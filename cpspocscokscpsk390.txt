@@ -1,13 +1,28 @@
 {
-    "type": "shadowsocks",
-    "method": "2022-blake3-aes-128-gcm",
-    "password": "8JCsPssfgS8tiRwiMlhARg==",
-    "destinations": [
-      {
-        "name": "UK 🇬🇧",
-        "server": "51.141.1.153",
-        "server_port": 7027,
-        "password": "och67cbr87YmlYad71Yaot"
-      }
-    ]
-  }
+    "log": {},
+    "experimental": {},
+    "dns": {
+        "servers": 
+            
+            {
+                "tag": "nextdns",
+                "address": "https://dns.nextdns.io/855974",
+                "address_resolver": "local",
+                "address_strategy": "prefer_ipv4",
+                "strategy": "ipv4_only",
+                "detour": "direct"
+            }
+            
+    },
+    "inbounds": [],
+    "outbounds": [
+        
+        {
+            "name": "UK 🇬🇧",
+            "server": "51.141.1.153",
+            "server_port": 7027,
+            "password": "och67cbr87YmlYad71Yaot"
+          }
+        ],
+    "route": {}
+}
