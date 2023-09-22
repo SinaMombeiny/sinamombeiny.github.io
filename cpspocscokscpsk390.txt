@@ -1,28 +1,10 @@
-{
-    "log": {},
-    "experimental": {},
-    "dns": {
-        "servers": 
-            
-            {
-                "tag": "nextdns",
-                "address": "https://dns.nextdns.io/855974",
-                "address_resolver": "local",
-                "address_strategy": "prefer_ipv4",
-                "strategy": "ipv4_only",
-                "detour": "direct"
-            }
-            
-    },
-    "inbounds": [],
-    "outbounds": [
-        
-        {
-            "name": "UK 🇬🇧",
-            "server": "51.141.1.153",
-            "server_port": 7027,
-            "password": "och67cbr87YmlYad71Yaot"
-          }
-        ],
-    "route": {}
-}
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpjSVA2c25jdGRLeVVGZFk5cmxCSFFpQDUxLjEzMi4zMS4xNToyMzU3Mg==#@vipoutline _22September
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNToyQWd1M1ZQaXRmeXlKdnNhZW9nQnQzQDUxLjE0Mi4xODUuNTo2MjgzOQ==#@vipoutline _21September
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpTTVRISzlpdXMxdmdMc2dIU1JUYk5NQDUxLjE0Mi4xODUuMjE1OjMzODY2#@vipoutline _19September
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTp6N3BhQzk3SWlMWENvaEpJUzkxSUhUQDUxLjE0Mi4xODUuMjIwOjMxMDA1#@vipoutline _18September
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTozUjdIMDhZdWNxWlRYREdud0RvVnpkQDUxLjE0Mi4xNzUuMTUxOjU3NzYw#@vipoutline _18September
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpYUlFUVUtTUkdwWWVlTHc3UURJRlZUQDUxLjE0Mi4xODYuMjM0OjIwNzEw#@vipoutline _17September
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpVSkQxOG95ZTRhdTc2QjNXd3VHc2ZyQDUxLjEzNy4xNzYuMTY2OjIzMTg3#@vipoutline _16september
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpIREhBTWlPMm5IRk1mNUtXcEVhZ2hWQDUxLjEzNy4xODAuMjI3OjMzNjAy#@vipoutline _15september
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpVWFhQZXRvNmlkVGNPMk5mOEI0Y1lFQDUxLjEwNC41OS4xNjc6MzExODA=#@vipoutline _14September
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpyeTI2NHR0SjdTYjhYV1JpRkZWWFg4QDUxLjEwNC41OS4yNDQ6MjUyMw==#@vipoutline _14September
