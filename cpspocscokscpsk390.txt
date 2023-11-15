@@ -1,2 +1,1 @@
-vless://c1dd4512-80ad-4240-e270-945ec790a586@185.45.195.135:33480?flow=xtls-rprx-vision&type=tcp&headerType=none&security=reality&fp=chrome&sni=discord.com&pbk=g1f1wLjim5gOVGnI5LGUV0dL4iFXPoiepOPZfSxJe14&sid=8428b645#LAforclash
 vless://c7bee07c-b6ad-4393-8fe4-29ca6127a5ad@185.45.195.135:39790?type=tcp&headerType=http&host=latimes.com&path=/&security=none#LAforiphone
