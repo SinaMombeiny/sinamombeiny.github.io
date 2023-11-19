@@ -1,1 +1,1 @@
-vless://a78a3b7d-bc35-4689-8f5f-1b8725056889@185.45.195.135:443?type=tcp&headerType=http&host=latimes.com&path=/&security=none#Los%20Angeles%200%20%F0%9F%87%BA%F0%9F%87%B8
+0.0.0.0
