@@ -1,1 +1,1 @@
-simple website
+personal website
