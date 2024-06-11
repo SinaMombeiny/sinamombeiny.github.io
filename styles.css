@@ -146,7 +146,7 @@ spoiler-text {
     -webkit-text-stroke: 0;
     background-color: rgba(32, 32, 32, 0.75);
     text-shadow: none;
-    text-stroke: 0;
+    text-shadow: 0;
     color: transparent;
     cursor: pointer;
     transition: color 0.1s ease-in-out;
