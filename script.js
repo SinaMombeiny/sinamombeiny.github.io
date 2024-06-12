@@ -1,351 +1,202 @@
-(function() {
-    var on = addEventListener,
-        off = removeEventListener,
-        $ = function(q) {
-            return document.querySelector(q)
-        },
-        $$ = function(q) {
-            return document.querySelectorAll(q)
-        },
-        $body = document.body,
-        $inner = $('.inner'),
-        client = (function() {
-            var o = {
-                    browser: 'other',
-                    browserVersion: 0,
-                    os: 'other',
-                    osVersion: 0,
-                    mobile: false,
-                    canUse: null,
-                    flags: {
-                        lsdUnits: false,
-                    },
-                },
-                ua = navigator.userAgent,
-                a,
-                i;
-            a = [['firefox', /Firefox\/([0-9\.]+)/], ['edge', /Edge\/([0-9\.]+)/], ['safari', /Version\/([0-9\.]+).+Safari/], ['chrome', /Chrome\/([0-9\.]+)/], ['chrome', /CriOS\/([0-9\.]+)/], ['ie', /Trident\/.+rv:([0-9]+)/]];
-            for (i = 0; i < a.length; i++) {
-                if (ua.match(a[i][1])) {
-                    o.browser = a[i][0];
-                    o.browserVersion = parseFloat(RegExp.$1);
-                    break;
-                }
-            }
-            a = [['ios', /([0-9_]+) like Mac OS X/, function(v) {
-                return v.replace('_', '.').replace('_', '');
-            }], ['ios', /CPU like Mac OS X/, function(v) {
-                return 0
-            }], ['ios', /iPad; CPU/, function(v) {
-                return 0
-            }], ['android', /Android ([0-9\.]+)/, null], ['mac', /Macintosh.+Mac OS X ([0-9_]+)/, function(v) {
-                return v.replace('_', '.').replace('_', '');
-            }], ['windows', /Windows NT ([0-9\.]+)/, null], ['undefined', /Undefined/, null]];
-            for (i = 0; i < a.length; i++) {
-                if (ua.match(a[i][1])) {
-                    o.os = a[i][0];
-                    o.osVersion = parseFloat(a[i][2] ? (a[i][2])(RegExp.$1) : RegExp.$1);
-                    break;
-                }
-            }
-            if (o.os == 'mac' && ('ontouchstart' in window) && ((screen.width == 1024 && screen.height == 1366) || (screen.width == 834 && screen.height == 1112) || (screen.width == 810 && screen.height == 1080) || (screen.width == 768 && screen.height == 1024)))
-                o.os = 'ios';
-            o.mobile = (o.os == 'android' || o.os == 'ios');
-            var _canUse = document.createElement('div');
-            o.canUse = function(property, value) {
-                var style;
-                style = _canUse.style;
-                if (!(property in style))
-                    return false;
-                if (typeof value !== 'undefined') {
-                    style[property] = value;
-                    if (style[property] == '')
-                        return false;
-                }
-                return true;
-            };
-            o.flags.lsdUnits = o.canUse('width', '100dvw');
-            return o;
-        }()),
-        trigger = function(t) {
-            dispatchEvent(new Event(t));
-        },
-        cssRules = function(selectorText) {
-            var ss = document.styleSheets,
-                a = [],
-                f = function(s) {
-                    var r = s.cssRules,
-                        i;
-                    for (i = 0; i < r.length; i++) {
-                        if (r[i] instanceof CSSMediaRule && matchMedia(r[i].conditionText).matches)
-                            (f)(r[i]);
-                        else if (r[i] instanceof CSSStyleRule && r[i].selectorText == selectorText)
-                            a.push(r[i]);
-                    }
-                },
-                x,
-                i;
-            for (i = 0; i < ss.length; i++)
-                f(ss[i]);
-            return a;
-        },
-        escapeHtml = function(s) {
-            if (s === '' || s === null || s === undefined)
-                return '';
-            var a = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#39;',
-            };
-            s = s.replace(/[&<>"']/g, function(x) {
-                return a[x];
-            });
-            return s;
-        },
-        thisHash = function() {
-            var h = location.hash ? location.hash.substring(1) : null,
-                a;
-            if (!h)
-                return null;
-            if (h.match(/\?/)) {
-                a = h.split('?');
-                h = a[0];
-                history.replaceState(undefined, undefined, '#' + h);
-                window.location.search = a[1];
-            }
-            if (h.length > 0 && !h.match(/^[a-zA-Z]/))
-                h = 'x' + h;
-            if (typeof h == 'string')
-                h = h.toLowerCase();
-            return h;
-        },
-        scrollToElement = function(e, style, duration) {
-            var y,
-                cy,
-                dy,
-                start,
-                easing,
-                offset,
-                f;
-            if (!e)
-                y = 0;
-            else {
-                offset = (e.dataset.scrollOffset ? parseInt(e.dataset.scrollOffset) : 0) * parseFloat(getComputedStyle(document.documentElement).fontSize);
-                switch (e.dataset.scrollBehavior ? e.dataset.scrollBehavior : 'default') {
-                case 'default':
-                default:
-                    y = e.offsetTop + offset;
-                    break;
-                case 'center':
-                    if (e.offsetHeight < window.innerHeight)
-                        y = e.offsetTop - ((window.innerHeight - e.offsetHeight) / 2) + offset;
-                    else
-                        y = e.offsetTop - offset;
-                    break;
-                case 'previous':
-                    if (e.previousElementSibling)
-                        y = e.previousElementSibling.offsetTop + e.previousElementSibling.offsetHeight + offset;
-                    else
-                        y = e.offsetTop + offset;
-                    break;
-                }
-            }
-            if (!style)
-                style = 'smooth';
-            if (!duration)
-                duration = 750;
-            if (style == 'instant') {
-                window.scrollTo(0, y);
-                return;
-            }
-            start = Date.now();
-            cy = window.scrollY;
-            dy = y - cy;
-            switch (style) {
-            case 'linear':
-                easing = function(t) {
-                    return t
-                };
-                break;
-            case 'smooth':
-                easing = function(t) {
-                    return t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
-                };
-                break;
-            }
-            f = function() {
-                var t = Date.now() - start;
-                if (t >= duration)
-                    window.scroll(0, y);
-                else {
-                    window.scroll(0, cy + (dy * easing(t / duration)));
-                    requestAnimationFrame(f);
-                }
-            };
-            f();
-        },
-        scrollToTop = function() {
-            scrollToElement(null);
-        },
-        loadElements = function(parent) {
-            var a,
-                e,
-                x,
-                i;
-            a = parent.querySelectorAll('iframe[data-src]:not([data-src=""])');
-            for (i = 0; i < a.length; i++) {
-                a[i].contentWindow.location.replace(a[i].dataset.src);
-                a[i].dataset.initialSrc = a[i].dataset.src;
-                a[i].dataset.src = '';
-            }
-            a = parent.querySelectorAll('video[autoplay]');
-            for (i = 0; i < a.length; i++) {
-                if (a[i].paused)
-                    a[i].play();
-            }
-            e = parent.querySelector('[data-autofocus="1"]');
-            x = e ? e.tagName : null;
-            switch (x) {
-            case 'FORM':
-                e = e.querySelector('.field input, .field select, .field textarea');
-                if (e)
-                    e.focus();
-                break;
-            default:
-                break;
-            }
-            a = parent.querySelectorAll('deferred-script');
-            for (i = 0; i < a.length; i++) {
-                x = document.createElement('script');
-                x.setAttribute('data-deferred', '');
-                if (a[i].getAttribute('src'))
-                    x.setAttribute('src', a[i].getAttribute('src'));
-                if (a[i].textContent)
-                    x.textContent = a[i].textContent;
-                a[i].replaceWith(x);
-            }
-        },
-        unloadElements = function(parent) {
-            var a,
-                e,
-                x,
-                i;
-            a = parent.querySelectorAll('iframe[data-src=""]');
-            for (i = 0; i < a.length; i++) {
-                if (a[i].dataset.srcUnload === '0')
-                    continue;
-                if ('initialSrc' in a[i].dataset)
-                    a[i].dataset.src = a[i].dataset.initialSrc;
-                else
-                    a[i].dataset.src = a[i].src;
-                a[i].contentWindow.location.replace('about:blank');
-            }
-            a = parent.querySelectorAll('video');
-            for (i = 0; i < a.length; i++) {
-                if (!a[i].paused)
-                    a[i].pause();
-            }
-            e = $(':focus');
-            if (e)
-                e.blur();
+class ClientInfo {
+    constructor() {
+        this.browser = 'other';
+        this.browserVersion = 0;
+        this.os = 'other';
+        this.osVersion = 0;
+        this.mobile = false;
+        this.flags = {
+            lsdUnits: false
         };
-    window._scrollToTop = scrollToTop;
-    var thisUrl = function() {
-        return window.location.href.replace(window.location.search, '').replace(/#$/, '');
-    };
-    var getVar = function(name) {
-        var a = window.location.search.substring(1).split('&'),
-            b,
-            k;
-        for (k in a) {
-            b = a[k].split('=');
-            if (b[0] == name)
-                return b[1];
+        this.init();
+    }
+
+    init() {
+        this.detectBrowser();
+        this.detectOS();
+        this.checkMobile();
+        this.checkLSdUnits();
+    }
+
+    detectBrowser() {
+        const ua = navigator.userAgent;
+        const browsers = [
+            ['firefox', /Firefox\/([0-9\.]+)/],
+            ['edge', /Edge\/([0-9\.]+)/],
+            ['safari', /Version\/([0-9\.]+).+Safari/],
+            ['chrome', /Chrome\/([0-9\.]+)/],
+            ['chrome', /CriOS\/([0-9\.]+)/],
+            ['ie', /Trident\/.+rv:([0-9]+)/]
+        ];
+        for (let [name, regex] of browsers) {
+            const match = ua.match(regex);
+            if (match) {
+                this.browser = name;
+                this.browserVersion = parseFloat(match[1]);
+                break;
+            }
         }
-        return null;
-    };
-    var errors = {
-        handle: function(handler) {
-            window.onerror = function(message, url, line, column, error) {
-                (handler)(error.message);
-                return true;
-            };
-        },
-        unhandle: function() {
-            window.onerror = null;
+    }
+
+    detectOS() {
+        const ua = navigator.userAgent;
+        const oses = [
+            ['ios', /([0-9_]+) like Mac OS X/, v => v.replace('_', '.').replace('_', '')],
+            ['ios', /CPU like Mac OS X/, v => 0],
+            ['ios', /iPad; CPU/, v => 0],
+            ['android', /Android ([0-9\.]+)/],
+            ['mac', /Macintosh.+Mac OS X ([0-9_]+)/, v => v.replace('_', '.').replace('_', '')],
+            ['windows', /Windows NT ([0-9\.]+)/]
+        ];
+        for (let [name, regex, versionTransform] of oses) {
+            const match = ua.match(regex);
+            if (match) {
+                this.os = name;
+                this.osVersion = parseFloat(versionTransform ? versionTransform(match[1]) : match[1]);
+                break;
+            }
         }
-    };
-    var loadHandler = function() {
-        setTimeout(function() {
+    }
+
+    checkMobile() {
+        this.mobile = (this.os === 'android' || this.os === 'ios');
+    }
+
+    checkLSdUnits() {
+        const div = document.createElement('div').style;
+        this.flags.lsdUnits = 'width' in div && (div.width = '100dvw') && div.width === '100dvw';
+    }
+}
+
+class Utilities {
+    static trigger(event) {
+        window.dispatchEvent(new Event(event));
+    }
+
+    static escapeHtml(str) {
+        if (!str) return '';
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        };
+        return str.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    static scrollToElement(element, style = 'smooth', duration = 750) {
+        const y = element ? element.offsetTop + (parseInt(element.dataset.scrollOffset || 0) * parseFloat(getComputedStyle(document.documentElement).fontSize)) : 0;
+        const start = Date.now();
+        const cy = window.scrollY;
+        const dy = y - cy;
+        const easing = t => style === 'linear' ? t : (t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1);
+
+        requestAnimationFrame(function scroll() {
+            const t = Date.now() - start;
+            if (t >= duration) {
+                window.scroll(0, y);
+            } else {
+                window.scroll(0, cy + (dy * easing(t / duration)));
+                requestAnimationFrame(scroll);
+            }
+        });
+    }
+
+    static loadElements(parent) {
+        const iframes = parent.querySelectorAll('iframe[data-src]:not([data-src=""])');
+        iframes.forEach(iframe => {
+            iframe.contentWindow.location.replace(iframe.dataset.src);
+            iframe.dataset.initialSrc = iframe.dataset.src;
+            iframe.dataset.src = '';
+        });
+
+        const videos = parent.querySelectorAll('video[autoplay]');
+        videos.forEach(video => {
+            if (video.paused) video.play();
+        });
+
+        const autofocusElement = parent.querySelector('[data-autofocus="1"]');
+        if (autofocusElement) autofocusElement.focus();
+
+        const scripts = parent.querySelectorAll('deferred-script');
+        scripts.forEach(script => {
+            const newScript = document.createElement('script');
+            if (script.src) newScript.src = script.src;
+            if (script.textContent) newScript.textContent = script.textContent;
+            script.replaceWith(newScript);
+        });
+    }
+
+    static unloadElements(parent) {
+        const iframes = parent.querySelectorAll('iframe[data-src=""]');
+        iframes.forEach(iframe => {
+            if (iframe.dataset.srcUnload === '0') return;
+            iframe.dataset.src = iframe.dataset.initialSrc || iframe.src;
+            iframe.contentWindow.location.replace('about:blank');
+        });
+
+        const videos = parent.querySelectorAll('video');
+        videos.forEach(video => {
+            if (!video.paused) video.pause();
+        });
+
+        const focusedElement = document.querySelector(':focus');
+        if (focusedElement) focusedElement.blur();
+    }
+}
+(function() {
+    const client = new ClientInfo();
+    const $body = document.body;
+
+    window._scrollToTop = () => Utilities.scrollToElement(null);
+
+    window.addEventListener('load', () => {
+        setTimeout(() => {
             $body.classList.remove('is-loading');
             $body.classList.add('is-playing');
-            setTimeout(function() {
+            setTimeout(() => {
                 $body.classList.remove('is-playing');
                 $body.classList.add('is-ready');
             }, 3625);
         }, 100);
-    };
-    on('load', loadHandler);
-    loadElements(document.body);
-    var style,
-        sheet,
-        rule;
-    style = document.createElement('style');
-    style.appendChild(document.createTextNode(''));
-    document.head.appendChild(style);
-    sheet = style.sheet;
+    });
+
+    Utilities.loadElements(document.body);
+
     if (client.mobile) {
-        (function() {
-            if (client.flags.lsdUnits) {
-                document.documentElement.style.setProperty('--viewport-height', '100svh');
-                document.documentElement.style.setProperty('--background-height', '100lvh');
-            } else {
-                var f = function() {
-                    document.documentElement.style.setProperty('--viewport-height', window.innerHeight + 'px');
-                    document.documentElement.style.setProperty('--background-height', (window.innerHeight + 250) + 'px');
-                };
-                on('load', f);
-                on('orientationchange', function() {
-                    setTimeout(function() {
-                        (f)();
-                    }, 100);
-                });
-            }
-        })();
+        const updateViewport = () => {
+            document.documentElement.style.setProperty('--viewport-height', window.innerHeight + 'px');
+            document.documentElement.style.setProperty('--background-height', (window.innerHeight + 250) + 'px');
+        };
+
+        if (!client.flags.lsdUnits) {
+            window.addEventListener('load', updateViewport);
+            window.addEventListener('orientationchange', () => setTimeout(updateViewport, 100));
+        } else {
+            document.documentElement.style.setProperty('--viewport-height', '100svh');
+            document.documentElement.style.setProperty('--background-height', '100lvh');
+        }
     }
-    if (client.os == 'android') {
-        (function() {
-            sheet.insertRule('body::after { }', 0);
-            rule = sheet.cssRules[0];
-            var f = function() {
-                rule.style.cssText = 'height: ' + (Math.max(screen.width, screen.height)) + 'px';
-            };
-            on('load', f);
-            on('orientationchange', f);
-            on('touchmove', f);
-        })();
+
+    if (client.os === 'android') {
+        const updateBodyAfterHeight = () => {
+            document.querySelector('body::after').style.height = `${Math.max(screen.width, screen.height)}px`;
+        };
+
+        window.addEventListener('load', updateBodyAfterHeight);
+        window.addEventListener('orientationchange', updateBodyAfterHeight);
+        window.addEventListener('touchmove', updateBodyAfterHeight);
         $body.classList.add('is-touch');
-    } else if (client.os == 'ios') {
-        if (client.osVersion <= 11)
-            (function() {
-                sheet.insertRule('body::after { }', 0);
-                rule = sheet.cssRules[0];
-                rule.style.cssText = '-webkit-transform: scale(1.0)';
-            })();
-        if (client.osVersion <= 11)
-            (function() {
-                sheet.insertRule('body.ios-focus-fix::before { }', 0);
-                rule = sheet.cssRules[0];
-                rule.style.cssText = 'height: calc(100% + 60px)';
-                on('focus', function(event) {
-                    $body.classList.add('ios-focus-fix');
-                }, true);
-                on('blur', function(event) {
-                    $body.classList.remove('ios-focus-fix');
-                }, true);
-            })();
+    } else if (client.os === 'ios') {
+        if (client.osVersion <= 11) {
+            document.querySelector('body::after').style.webkitTransform = 'scale(1.0)';
+            if (client.osVersion <= 11) {
+                document.querySelector('body.ios-focus-fix::before').style.height = 'calc(100% + 60px)';
+                window.addEventListener('focus', () => $body.classList.add('ios-focus-fix'), true);
+                window.addEventListener('blur', () => $body.classList.remove('ios-focus-fix'), true);
+            }
+        }
         $body.classList.add('is-touch');
     }
 })();
