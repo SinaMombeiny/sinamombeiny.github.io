@@ -540,21 +540,6 @@ hr.style1:before {
     transition: opacity 0.25s ease;
 }
 
-.icc-credits span::after {
-    background-image: linear-gradient(30deg, #A464A1 15%, #3B5DAD 85%);
-    border-radius: inherit;
-    box-shadow: 0 0.25em 1.25em 0 rgba(0, 0, 0, 0.25);
-    content: '';
-    display: block;
-    height: calc(100% + 2px);
-    left: -1px;
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    top: -1px;
-    transition: opacity 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-    width: calc(100% + 2px);
-}
 
 .icc-credits span:hover {
     text-transform: none !important;
