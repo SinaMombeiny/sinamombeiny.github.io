@@ -472,153 +472,65 @@ hr.style1:before {
         font-size: 12pt;
     }
 
-    #main > .inner {
-        --padding-horizontal: 1rem;
-        --padding-vertical: 1rem;
-        --spacing: 0rem;
+#main > .inner {
+    --padding-horizontal: 1rem;
+    --padding-vertical: 1rem;
+    --spacing: 0rem;
     }
 
-    h1.style1, h2.style1, h3.style1, p.style1 {
-        letter-spacing: 0rem;
-        width: 100%;
-        font-size: 3em;
-        line-height: 1.25;
+h1.style1, h2.style1, h3.style1, p.style1 {
+    letter-spacing: 0rem;
+    width: 100%;
+    font-size: 3em;
+    line-height: 1.25;
     }
 
-    h1.style2, h2.style2, h3.style2, p.style2 {
-        letter-spacing: 0rem;
-        width: 100%;
-        font-size: 1em;
-        line-height: 1.75;
+h1.style2, h2.style2, h3.style2, p.style2 {
+    letter-spacing: 0rem;
+    width: 100%;
+    font-size: 1em;
+    line-height: 1.75;
     }
 
-    .container.style2 {
-        min-height: 15.75rem;
+.container.style2 {
+    min-height: 15.75rem;
     }
 
-    .container.style2:not(:last-child) {
-        margin-bottom: 0.5625rem !important;
+.container.style2:not(:last-child) {
+    margin-bottom: 0.5625rem !important;
     }
 
-    .container.style2 > .wrapper > .inner {
-        --gutters: 2rem;
-        --padding-vertical: 3.5rem;
-        --spacing: 1.75rem;
+.container.style2 > .wrapper > .inner {
+    --gutters: 2rem;
+    --padding-vertical: 3.5rem;
+    --spacing: 1.75rem;
     }
 
-    .container.style2.columns > .wrapper > .inner {
-        flex-direction: column !important;
-        flex-wrap: nowrap !important;
-    }
+hr.style1:before {
+height: 6rem;
+ }
 
-    .container.style2.columns > .wrapper > .inner > span {
-        height: 0;
-        margin-top: calc(var(--gutters) * -1);
-        pointer-events: none;
-        visibility: hidden;
-    }
-
-    .container.style2.columns > .wrapper > .inner > * :first-child {
-        margin-left: 0 !important;
-        padding-top: 0 !important;
-    }
-
-    .container.style2.columns > .wrapper > .inner > * {
-        padding: calc(var(--gutters) * 0.5) 0 !important;
-    }
-
-    .container.style2.columns > .wrapper > .inner > * :last-child {
-        padding-bottom: 0 !important;
-    }
-
-    .container.style2.columns > .wrapper > .inner > div > .full {
-        margin-left: calc(var(--padding-horizontal) * -1);
-        width: calc(100% +(var(--padding-horizontal) * 2) + 0.4725px);
-    }
-
-    .container.style2.columns > .wrapper > .inner > div:first-of-type > .full {
-        margin-left: calc(var(--padding-horizontal) * -1);
-        width: calc(100% +(var(--padding-horizontal) * 2) + 0.4725px);
-    }
-
-    .container.style2.columns > .wrapper > .inner > div:last-of-type > .full {
-        margin-left: calc(var(--padding-horizontal) * -1);
-        width: calc(100% +(var(--padding-horizontal) * 2) + 0.4725px);
-    }
-
-    .container.style2.columns > .wrapper > .inner > div > .full:first-child {
-        margin-top: calc(var(--gutters) * -0.5) !important;
-    }
-
-    .container.style2.columns > .wrapper > .inner > div > .full:last-child {
-        margin-bottom: calc(var(--gutters) * -0.5) !important;
-    }
-
-    .container.style2.columns > .wrapper > .inner > div:first-of-type > .full:first-child {
-        margin-top: calc(var(--padding-vertical) * -1) !important;
-    }
-
-    .container.style2.columns > .wrapper > .inner > div:last-of-type > .full:last-child {
-        margin-bottom: calc(var(--padding-vertical) * -1) !important;
-    }
-
-    .container.style2.columns > .wrapper > .inner > div:first-of-type, .container.style2.columns > .wrapper > .inner > div:first-of-type > .full:first-child {
-        border-top-left-radius: inherit;
-        border-top-right-radius: inherit;
-    }
-
-    .container.style2.columns > .wrapper > .inner > div:last-of-type, .container.style2.columns > .wrapper > .inner > div:last-of-type > .full:last-child {
-        border-bottom-left-radius: inherit;
-        border-bottom-right-radius: inherit;
-    }
-
-    .container.style2.columns > .wrapper > .inner > div:first-of-type, .container.style2.columns > .wrapper > .inner > div:first-of-type > .full:last-child {
-        border-bottom-left-radius: 0 !important;
-    }
-
-    .container.style2.columns > .wrapper > .inner > div:last-of-type, .container.style2.columns > .wrapper > .inner > div:last-of-type > .full:first-child {
-        border-top-right-radius: 0 !important;
-    }
-
-    .container.style2.columns > .wrapper > .inner > .full {
-        min-height: 15.75rem;
-    }
-
-    .container.style2.columns > .wrapper > .inner > .full > .full:first-child:last-child {
-        height: auto;
-    }
-
-    .container.style2.columns > .wrapper > .inner > .full > .full:first-child:last-child > * {
-        height: auto;
-        position: relative;
-        width: auto;
-    }
-
-    hr.style1:before {
-        height: 6rem;
-    }
-
-    .icons.style1 {
-        font-size: 1.375em;
-        gap: 0.5rem;
-    }
+.icons.style1 {
+font-size: 1.375em;
+gap: 0.5rem;
+ }
 }
 
 @media (max-width: 480px) {
     #main > .inner {
-        --spacing: 0rem;
+    --spacing: 0rem;
     }
 
     .container.style2 > .wrapper > .inner {
-        --spacing: 1.53125rem;
+    --spacing: 1.53125rem;
     }
 }
 
 @media (max-width: 360px) {
     #main > .inner {
-        --padding-horizontal: 0.75rem;
-        --padding-vertical: 0.75rem;
-        --spacing: 0rem;
+    --padding-horizontal: 0.75rem;
+    --padding-vertical: 0.75rem;
+    --spacing: 0rem;
     }
 
     h1.style1, h2.style1, h3.style1, p.style1 {
@@ -627,12 +539,6 @@ hr.style1:before {
 
     h1.style2, h2.style2, h3.style2, p.style2 {
         font-size: 1em;
-    }
-
-    .container.style2 > .wrapper > .inner {
-        --gutters: 1.5rem;
-        --padding-vertical: 2.625rem;
-        --spacing: 1.3125rem;
     }
 
     .container.style2 {
