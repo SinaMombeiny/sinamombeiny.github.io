@@ -61,29 +61,41 @@ body.is-loading:after {
     z-index: 2;
     -webkit-overflow-scrolling: touch;
 }
-
 #main {
-    display: flex;
+    --alignment: center;
+    --flex-alignment: center;
+    --indent-left: 1;
+    --indent-right: 1;
+    --border-radius-tl: 0;
+    --border-radius-tr: 0;
+    --border-radius-br: 0;
+    --border-radius-bl: 0;
     align-items: center;
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
     justify-content: center;
     max-width: 100%;
     position: relative;
-    text-align: center;
+    text-align: var(--alignment);
     z-index: 1;
-    transition: opacity 2s ease-in-out;
+    transition: opacity 2s ease-in-out 0s;
 }
-
 #main > .inner {
-    max-width: 75rem;
-    width: 100%;
-    padding: 4rem;
-    border-radius: 0;
+    --padding-horizontal: 4rem;
+    --padding-vertical: 4rem;
+    --spacing: 0rem;
+    --width: 75rem;
+    border-radius: var(--border-radius-tl) var(--border-radius-tr) var(--border-radius-br) var(--border-radius-bl);
+    max-width: 100%;
+    position: relative;
+    width: var(--width);
+    z-index: 1;
+    padding: var(--padding-vertical) var(--padding-horizontal);
 }
-
 #main > .inner > * {
     margin: 0;
 }
-
 #main > .inner > :first-child {
     margin-top: 0 !important;
 }
@@ -115,7 +127,6 @@ body.is-loading:after {
     margin-left: -50vw;
     border-radius: 0 !important;
 }
-
 body.is-loading #main {
     opacity: 0;
 }
@@ -126,7 +137,6 @@ h1.style1, h2.style1, h3.style1, p.style1 {
     line-height: 1.25;
     font-weight: 300;
 }
-
 h1.style2, h2.style2, h3.style2, p.style2 {
     color: var(--light-color);
     font-family: var(--font-secondary);
@@ -134,25 +144,47 @@ h1.style2, h2.style2, h3.style2, p.style2 {
     line-height: 1.75;
     font-weight: 400;
 }
-.container {
+.container > .wrapper {
+    vertical-align: top;
     position: relative;
     max-width: 100%;
     border-radius: inherit;
+}
+.container.style2 {
     display: flex;
+    width: 100%;
+    min-height: 21rem;
     align-items: center;
     justify-content: center;
     background-color: transparent;
 }
-
-.container.style2 {
-    min-height: 21rem;
+.container.style2:not(:last-child) {
     margin-bottom: 0.75rem !important;
 }
-
 .container.style2 > .wrapper > .inner {
-    padding: 7.7rem 4rem;
+    --gutters: 2rem;
+    --padding-vertical: 7.7rem;
+    --spacing: 1.75rem;
+    padding: var(--padding-vertical) var(--padding-horizontal);
 }
-
+.container.style2 > .wrapper {
+    max-width: var(--width);
+    width: 100%;
+}
+.container.style2.default > .wrapper > .inner > * {
+    margin-bottom: var(--spacing);
+    margin-top: var(--spacing);
+}
+.container.style2.columns > .wrapper > .inner > .full {
+    align-self: stretch;
+    min-height: 21rem;
+}
+.container.style2.columns > .wrapper > .inner > .full > .full:first-child:last-child > * {
+    border-radius: inherit;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
 hr {
     display: flex;
     justify-content: center;
@@ -160,20 +192,18 @@ hr {
     min-height: 1rem;
     border: 0;
 }
-
 hr.style1:before {
     content: '';
     height: 8rem;
     background-color: rgba(214, 212, 212, 0.349);
     width: 1px;
 }
-
 .icons {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: var(--flex-alignment);
+    letter-spacing: 0;
     padding: 0;
-    gap: 0.5rem;
 }
 .icons li {
     z-index: 1;
@@ -200,50 +230,59 @@ hr.style1:before {
     font-size: 1.375em;
     gap: 0.5rem;
 }
-
 .icons li a:hover svg {
     fill: rgba(217, 217, 217, 0.49) !important;
 }
-
 @media (max-width: 980px) {
     html {
         font-size: 10pt;
     }
 }
-
 @media (max-width: 736px) {
     html {
         font-size: 12pt;
     }
-
-    #main > .inner {
-        padding: 1rem;
+#main > .inner {
+    padding: 1rem;
+    }
+h1.style1, h2.style1, h3.style1, p.style1 {
+    font-size: 3em;
     }
 
-    h1.style1, h2.style1, h3.style1, p.style1 {
-        font-size: 3em;
+.container.style2 {
+    min-height: 15.75rem;
     }
-
-    .container.style2 {
-        min-height: 15.75rem;
+.container.style2:not(:last-child) {
+    margin-bottom: 0.5625rem !important;
     }
-}
-
+.container.style2 > .wrapper > .inner {
+    --gutters: 2rem;
+    --padding-vertical: 3.5rem;
+    --spacing: 1.75rem;
+    }
+hr.style1:before {
+height: 6rem;
+ }
+.icons.style1 {
+ font-size: 1.375em;
+ gap: 0.5rem;
+  }
+ }
 @media (max-width: 480px) {
+    #main > .inner {
+    --spacing: 0rem;
+    }
     .container.style2 > .wrapper > .inner {
-        padding: 3.5rem 2rem;
+    --spacing: 1.53125rem;
     }
 }
-
 @media (max-width: 360px) {
     #main > .inner {
         padding: 0.75rem;
     }
-
     h1.style1, h2.style1, h3.style1, p.style1 {
         font-size: 3em;
     }
-
     .container.style2 {
         min-height: 10.5rem;
     }
