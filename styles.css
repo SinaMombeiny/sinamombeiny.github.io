@@ -8,7 +8,6 @@ ol, ul {
 
 :root {
     --background-height: 100vh;
-    --viewport-height: 100vh;
     --primary-color: #000000;
     --secondary-color: #000124;
     --light-color: rgba(255, 255, 255, 0.812);
@@ -44,13 +43,11 @@ body.is-loading:after {
 #wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    min-height: var(--viewport-height);
     overflow: hidden;
     position: relative;
     z-index: 2;
-    -webkit-overflow-scrolling: touch;
 }   
+
 @font-face {
     font-family: 'Raleway';
     src: url('fonts/Raleway-VariableFont_wght.ttf') format('woff2')
@@ -186,9 +183,11 @@ hr.style1:before {
     html {
         font-size: 12pt;
     }
+
 #main > .inner {
     padding: 1rem;
     }
+    
 h1.style1, h2.style1, h3.style1, p.style1 {
     font-size: 3em;
     }
@@ -196,29 +195,16 @@ h1.style1, h2.style1, h3.style1, p.style1 {
 .container.style2 {
     min-height: 15.75rem;
     }
+
 .container.style2:not(:last-child) {
-    margin-bottom: 0.5625rem !important;
+    margin-bottom: 0.5630rem !important;
     }
+
 .container.style2 > .wrapper > .inner {
-    --gutters: 2rem;
-    --padding-vertical: 3.5rem;
-    --spacing: 1.75rem;
+    --padding-vertical: 3.2rem;
     }
+    
 hr.style1:before {
 height: 6rem;
- }
-
- }
-@media (max-width: 480px) {
-    #main > .inner {
-    --spacing: 0rem;
-    }
-    .container.style2 > .wrapper > .inner {
-    --spacing: 1.53125rem;
-    }
 }
-@media (max-width: 360px) {
-    #main > .inner {
-        padding: 0.75rem;
-    }
 }
