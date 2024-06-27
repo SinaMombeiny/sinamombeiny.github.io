@@ -9,6 +9,7 @@
             if (video.paused) video.play();
         });
     };
+
     const startAnimation = () => {
         const body = document.body;
         body.classList.add('is-playing');
@@ -21,9 +22,6 @@
 
     const init = async () => {
         const body = document.body;
-
-        await loadFonts();
-        loadElements(document.body);
 
         const icons = document.querySelectorAll('#icons01 a');
         icons.forEach(icon => {
@@ -53,6 +51,6 @@
     if (!document.body.classList.contains('is-loading')) {
         document.body.classList.add('is-loading');
     }
-    
+
     window.addEventListener('load', init);
 })();
