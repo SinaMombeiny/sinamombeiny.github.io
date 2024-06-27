@@ -1,28 +1,37 @@
 html, body, div{
     margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
-
 ol, ul {
     list-style: none;
 }
-
 :root {
     --background-height: 100vh;
+    --site-alignment: left;
+    --site-direction: ltr;
+    --viewport-height: 100vh;
     --primary-color: #000000;
     --secondary-color: #000124;
     --light-color: rgba(255, 255, 255, 0.812);
-    --font-primary: 'Raleway';
-    --font-secondary: 'Homemade Apple';
+    --transition-duration: 0.25s;
+    --font-primary: 'Raleway', sans-serif;
+    --font-secondary: 'Homemade Apple', cursive;
 }
-
 body:before {
     content: '';
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: var(--background-height);
+    z-index: 0;
     background: linear-gradient(157deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    pointer-events: none;
 }
-
 body:after {
     content: '';
     position: fixed;
@@ -34,6 +43,7 @@ body:after {
     opacity: 0;
     visibility: hidden;
     z-index: 1;
+    pointer-events: none;
     transition: opacity 3.625s ease-in-out, visibility 3.625s;
 }
 body.is-loading:after {
@@ -43,36 +53,49 @@ body.is-loading:after {
 #wrapper {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: var(--viewport-height);
     overflow: hidden;
     position: relative;
     z-index: 2;
+    -webkit-overflow-scrolling: touch;
 }   
-
 @font-face {
     font-family: 'Raleway';
-    src: url('fonts/Raleway-VariableFont_wght.ttf') format('woff2')
-
+    src: url('fonts/Raleway-VariableFont_wght.ttf') format('woff2'),
+         url('fonts/Raleway-VariableFont_wght.ttf') format('woff');
+    font-weight: 300;
+    font-style: normal;
 }
 
 @font-face {
     font-family: 'Homemade Apple';
-    src: url('fonts/HomemadeApple-Regular.ttf') format('woff2')
+    src: url('fonts/HomemadeApple-Regular.ttf') format('woff2'),
+         url('fonts/HomemadeApple-Regular.ttf') format('woff');
+    font-weight: 400;
+    font-style: normal;
 }
-
 #main {
     --alignment: center;
     --flex-alignment: center;
     --indent-left: 1;
     --indent-right: 1;
+    --border-radius-tl: 0;
+    --border-radius-tr: 0;
+    --border-radius-br: 0;
+    --border-radius-bl: 0;
     align-items: center;
     display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
     justify-content: center;
     max-width: 100%;
+    position: relative;
     text-align: var(--alignment);
     z-index: 1;
     transition: opacity 2s ease-in-out 0s;
 }
-
 #main > .inner {
     --padding-horizontal: 4rem;
     --padding-vertical: 4rem;
@@ -88,7 +111,37 @@ body.is-loading:after {
 #main > .inner > * {
     margin: 0;
 }
+#main > .inner > :first-child {
+    margin-top: 0 !important;
+}
 
+#main > .inner > :last-child {
+    margin-bottom: 0 !important;
+}
+
+#main > .inner > .full {
+    margin: 0 -4rem;
+    width: calc(100% + 8rem);
+}
+
+#main > .inner > .full:first-child {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+    margin-top: -4rem !important;
+}
+
+#main > .inner > .full:last-child {
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+    margin-bottom: -4rem !important;
+}
+
+#main > .inner > .full.screen {
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    border-radius: 0 !important;
+}
 body.is-loading #main {
     opacity: 0;
 }
@@ -106,7 +159,12 @@ h1.style2, h2.style2, h3.style2, p.style2 {
     line-height: 1.75;
     font-weight: 400;
 }
-
+.container > .wrapper {
+    vertical-align: top;
+    position: relative;
+    max-width: 100%;
+    border-radius: inherit;
+}
 .container.style2 {
     display: flex;
     width: 100%;
@@ -115,23 +173,33 @@ h1.style2, h2.style2, h3.style2, p.style2 {
     justify-content: center;
     background-color: transparent;
 }
-
 .container.style2:not(:last-child) {
     margin-bottom: 0.75rem !important;
 }
-
 .container.style2 > .wrapper > .inner {
     --gutters: 2rem;
     --padding-vertical: 7.7rem;
     --spacing: 1.75rem;
     padding: var(--padding-vertical) var(--padding-horizontal);
 }
-
+.container.style2 > .wrapper {
+    max-width: var(--width);
+    width: 100%;
+}
 .container.style2.default > .wrapper > .inner > * {
     margin-bottom: var(--spacing);
     margin-top: var(--spacing);
 }
-
+.container.style2.columns > .wrapper > .inner > .full {
+    align-self: stretch;
+    min-height: 21rem;
+}
+.container.style2.columns > .wrapper > .inner > .full > .full:first-child:last-child > * {
+    border-radius: inherit;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
 hr {
     display: flex;
     justify-content: center;
@@ -152,7 +220,9 @@ hr.style1:before {
     letter-spacing: 0;
     padding: 0;
 }
-
+.icons li {
+    z-index: 1;
+}
 .icons li a {
     display: flex;
     align-items: center;
@@ -178,16 +248,18 @@ hr.style1:before {
 .icons li a:hover svg {
     fill: rgba(217, 217, 217, 0.49) !important;
 }
-
+@media (max-width: 980px) {
+    html {
+        font-size: 10pt;
+    }
+}
 @media (max-width: 736px) {
     html {
         font-size: 12pt;
     }
-
 #main > .inner {
     padding: 1rem;
     }
-    
 h1.style1, h2.style1, h3.style1, p.style1 {
     font-size: 3em;
     }
@@ -195,16 +267,38 @@ h1.style1, h2.style1, h3.style1, p.style1 {
 .container.style2 {
     min-height: 15.75rem;
     }
-
 .container.style2:not(:last-child) {
-    margin-bottom: 0.5630rem !important;
+    margin-bottom: 0.5625rem !important;
     }
-
 .container.style2 > .wrapper > .inner {
-    --padding-vertical: 3.2rem;
+    --gutters: 2rem;
+    --padding-vertical: 3.5rem;
+    --spacing: 1.75rem;
     }
-    
 hr.style1:before {
 height: 6rem;
+ }
+.icons.style1 {
+ font-size: 1.375em;
+ gap: 0.5rem;
+  }
+ }
+@media (max-width: 480px) {
+    #main > .inner {
+    --spacing: 0rem;
+    }
+    .container.style2 > .wrapper > .inner {
+    --spacing: 1.53125rem;
+    }
 }
+@media (max-width: 360px) {
+    #main > .inner {
+        padding: 0.75rem;
+    }
+    h1.style1, h2.style1, h3.style1, p.style1 {
+        font-size: 3em;
+    }
+    .container.style2 {
+        min-height: 10.5rem;
+    }
 }
