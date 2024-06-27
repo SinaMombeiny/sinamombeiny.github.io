@@ -1,15 +1,4 @@
 (function() {
-    const ua = navigator.userAgent;
-    const browser = (/Firefox\//.test(ua)) ? 'firefox' : 
-                    (/Chrome\//.test(ua)) ? 'chrome' : 'other';
-
-    const client = {
-        browser: browser,
-        mobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua),
-        os: (/iPhone|iPad|iPod/.test(ua)) ? 'ios' : 
-            (/Android/.test(ua)) ? 'android' : 'other'
-    };
-
     const loadElements = (parent) => {
         parent.querySelectorAll('iframe[data-src]:not([data-src=""])').forEach(iframe => {
             iframe.src = iframe.dataset.src;
@@ -20,20 +9,20 @@
             if (video.paused) video.play();
         });
     };
+    const startAnimation = () => {
+        const body = document.body;
+        body.classList.add('is-playing');
+        
+        setTimeout(() => {
+            body.classList.remove('is-playing');
+            body.classList.add('is-ready');
+        }, 3625);
+    };
 
     const init = async () => {
         const body = document.body;
 
-        setTimeout(() => {
-            body.classList.remove('is-loading');
-            body.classList.add('is-playing');
-            
-            setTimeout(() => {
-                body.classList.remove('is-playing');
-                body.classList.add('is-ready');
-            }, 3625);
-        }, 100);
-
+        await loadFonts();
         loadElements(document.body);
 
         const icons = document.querySelectorAll('#icons01 a');
@@ -43,7 +32,7 @@
             icon.addEventListener('mouseleave', () => svg.style.fill = '#E3E3E3');
         });
 
-        if (client.mobile) {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             const updateViewport = () => {
                 const vh = window.innerHeight;
                 document.documentElement.style.setProperty('--viewport-height', `${vh}px`);
@@ -53,29 +42,17 @@
             window.addEventListener('resize', updateViewport);
             window.addEventListener('orientationchange', () => setTimeout(updateViewport, 100));
             updateViewport();
+            
+            body.classList.add('is-mobile');
         }
 
-        if (client.os === 'android') {
-            const updateBodyAfterHeight = () => {
-                document.body.style.setProperty('--body-after-height', `${Math.max(screen.width, screen.height)}px`);
-            };
-
-            window.addEventListener('resize', updateBodyAfterHeight);
-            window.addEventListener('orientationchange', updateBodyAfterHeight);
-            updateBodyAfterHeight();
-        }
-
-        body.classList.add(client.browser);
-        if (client.mobile) body.classList.add('is-mobile');
+        body.classList.remove('is-loading');
+        startAnimation();
     };
 
     if (!document.body.classList.contains('is-loading')) {
         document.body.classList.add('is-loading');
     }
     
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
+    window.addEventListener('load', init);
 })();
