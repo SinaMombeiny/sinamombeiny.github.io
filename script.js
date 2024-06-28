@@ -1,16 +1,5 @@
 (function() {
     
-    const loadElements = (parent) => {
-        parent.querySelectorAll('iframe[data-src]:not([data-src=""])').forEach(iframe => {
-            iframe.src = iframe.dataset.src;
-            iframe.dataset.src = '';
-        });
-
-        parent.querySelectorAll('video[autoplay]').forEach(video => {
-            if (video.paused) video.play();
-        });
-    };
-
     const startAnimation = () => {
         const body = document.body;
         body.classList.add('is-playing');
