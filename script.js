@@ -1,18 +1,14 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const body = document.body;
-
-    const startAnimation = () => {
-        body.classList.add('is-playing');
-        
-        setTimeout(() => {
-            body.classList.replace('is-playing', 'is-ready');
-        }, 3625);
+(function() {
+    
+    const init = async () => {
+        const body = document.body;
+        body.classList.remove('is-loading');
+        startAnimation();
     };
 
-    if (!body.classList.contains('is-loading')) {
-        body.classList.add('is-loading');
+    if (!document.body.classList.contains('is-loading')) {
+        document.body.classList.add('is-loading');
     }
 
-    body.classList.remove('is-loading');
-    startAnimation();
-});
+    window.addEventListener('load', init);
+})();
