@@ -4,13 +4,21 @@
     };
   
     const init = () => {
-      document.body.classList.remove('is-loading');
-      startAnimation();
+      if (document.body.classList.contains('is-loading')) {
+        document.body.classList.remove('is-loading');
+        setTimeout(startAnimation, 50);
+      } else {
+        startAnimation();
+      }
     };
-
+  
     if (!document.body.classList.contains('is-loading')) {
       document.body.classList.add('is-loading');
     }
-
-    window.addEventListener('load', init);
+  
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      window.requestAnimationFrame(init);
+    }
   })();
