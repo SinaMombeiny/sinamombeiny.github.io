@@ -189,6 +189,15 @@ hr.style1:before {
     fill: rgba(217, 217, 217, 0.49) !important;
 }
 
+a.no-style {
+    color: inherit;
+    text-decoration: none;
+}
+
+a.no-style:hover {
+    text-decoration: none;
+}
+
 @media (max-width: 736px) {
     html {
         font-size: 12pt;
